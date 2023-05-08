@@ -1,12 +1,14 @@
 FROM registry.access.redhat.com/ubi8/python-39
 
-WORKDIR /app
+ENV PR_DIR=/app
+
+WORKDIR $PR_DIR
 
 USER 1001
 
-RUN --mount=type=secret,id=prodigykey,mode=1001,required=true \
+RUN --mount=type=cache,target=$PR_DIR,uid=1001,gid=0
     pip install --upgrade pip \
-    && pip install prodigy -f https://$(cat /run/secrets/prodigykey)@download.prodi.gy \
+    && pip install prodigy -f https://$prodigykey@download.prodi.gy \
     && python -m spacy download en_core_web_sm
 
 COPY --chown=1001 prodigy.json .
