@@ -6,7 +6,7 @@ WORKDIR $PR_DIR
 
 USER 1001
 
-RUN --mount=type=cache,target=$PR_DIR,uid=1001,gid=0
+RUN --mount=type=cache,target=$PR_DIR,uid=1001,gid=0 \
     pip install --upgrade pip \
     && pip install prodigy -f https://$prodigykey@download.prodi.gy \
     && python -m spacy download en_core_web_sm
