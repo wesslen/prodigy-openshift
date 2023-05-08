@@ -1,0 +1,30 @@
+FROM registry.access.redhat.com/ubi8/python-39
+
+WORKDIR /app
+# Set up a new user named "user" with user ID 1000
+RUN useradd -m -u 1000 user
+# Switch to the "user" user
+USER user
+# Set home to the user's home directory
+ENV HOME=/home/user \
+	PATH=/home/user/.local/bin:$PATH
+
+# Set the working directory to the user's home directory
+WORKDIR $HOME/app
+
+# Copy the current directory contents into the container at $HOME/app setting the owner to the user
+COPY --chown=user . $HOME/app
+
+RUN pip install --upgrade pip \
+    && pip install prodigy -f https://${LICENSE_KEY}@download.prodi.gy \
+    && python -m spacy download en_core_web_sm
+
+COPY prodigy.json .
+
+ENV PRODIGY_HOME /app
+ENV PRODIGY_LOGGING "verbose"
+ENV PRODIGY_ALLOWED_SESSIONS "user1,user2"
+
+EXPOSE 8080
+
+CMD python -m prodigy ner.manual ner_news en_core_web_sm ./data/dataset.jsonl --label PERSON,ORG,PRODUCT
