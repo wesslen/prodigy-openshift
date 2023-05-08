@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/rhel9/python-39
+FROM registry.redhat.io/rhel9/python-39
 
 ENV PR_DIR=/app
 
