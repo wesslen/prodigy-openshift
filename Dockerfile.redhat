@@ -7,6 +7,7 @@ WORKDIR $PR_DIR
 USER 1001
 
 COPY --chown=1001 prodigy.json .
+COPY --chown=1001 data ./data/
 
 ENV PRODIGY_HOME /app
 ENV PRODIGY_LOGGING "verbose"
