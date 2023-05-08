@@ -1,4 +1,4 @@
-FROM registry.redhat.io/rhel9/python-39
+FROM python:3.9-alpine
 
 ENV PR_DIR=/app
 
